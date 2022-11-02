@@ -53,8 +53,7 @@ items:
       selector:
         matchLabels:
           io.kompose.service: laravel-app
-      strategy:
-        type: Recreate
+      strategy: {}
       template:
         metadata:
           annotations:
@@ -76,28 +75,7 @@ items:
               ports:
                 - containerPort: 80
               resources: {}
-              volumeMounts:
-                - mountPath: /var/www/html
-                  name: laravel-app-claim0
           restartPolicy: Always
-          volumes:
-            - name: laravel-app-claim0
-              persistentVolumeClaim:
-                claimName: laravel-app-claim0
-    status: {}
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      creationTimestamp: null
-      labels:
-        io.kompose.service: laravel-app-claim0
-      name: laravel-app-claim0
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 100Mi
     status: {}
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
