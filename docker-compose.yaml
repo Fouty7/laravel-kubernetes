@@ -27,11 +27,13 @@ services:
     container_name: mysql-db
     volumes:
       - ./run/var:/var/lib/mysql
+    ports:
+      - ${FORWARD_DB_PORT}:3306  
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=dbuser
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     networks:
       mynetwork:
         aliases:

@@ -1,0 +1,162 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-app
+      name: laravel-app
+    spec:
+      ports:
+        - name: "80"
+          port: 80
+          targetPort: 80
+      selector:
+        io.kompose.service: laravel-app
+    status:
+      loadBalancer: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-app
+      name: laravel-app
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: laravel-app
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/mynetwork: "true"
+            io.kompose.service: laravel-app
+        spec:
+          containers:
+            - env:
+                - name: APACHE_RUN_GROUP
+                  value: '#'
+                - name: APACHE_RUN_USER
+                  value: '#'
+              image: aminfourty7/laravel-kubernetes:latest
+              name: laravel-app
+              ports:
+                - containerPort: 80
+              resources: {}
+              volumeMounts:
+                - mountPath: /var/www/html
+                  name: laravel-app-claim0
+          restartPolicy: Always
+          volumes:
+            - name: laravel-app-claim0
+              persistentVolumeClaim:
+                claimName: laravel-app-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-app-claim0
+      name: laravel-app-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      creationTimestamp: null
+      name: mynetwork
+    spec:
+      ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                  io.kompose.network/mynetwork: "true"
+      podSelector:
+        matchLabels:
+          io.kompose.network/mynetwork: "true"
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql-db
+      name: mysql-db
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: mysql-db
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/mynetwork: "true"
+            io.kompose.service: mysql-db
+        spec:
+          containers:
+            - env:
+                - name: MYSQL_DATABASE
+                  value: db
+                - name: MYSQL_PASSWORD
+                  value: password
+                - name: MYSQL_ROOT_PASSWORD
+                  value: password
+                - name: MYSQL_USER
+                  value: dbuser
+              image: mysql:5.7
+              name: mysql-db
+              resources: {}
+              volumeMounts:
+                - mountPath: /var/lib/mysql
+                  name: mysql-db-claim0
+          restartPolicy: Always
+          volumes:
+            - name: mysql-db-claim0
+              persistentVolumeClaim:
+                claimName: mysql-db-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql-db-claim0
+      name: mysql-db-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+kind: List
+metadata: {}
+
