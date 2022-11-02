@@ -19,6 +19,25 @@ items:
         io.kompose.service: laravel-app
     status:
       loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml -o kubemanifests.yml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql-db
+      name: mysql-db
+    spec:
+      ports:
+        - name: "3306"
+          port: 3306
+          targetPort: 3306
+      selector:
+        io.kompose.service: mysql-db
+    status:
+      loadBalancer: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -124,15 +143,13 @@ items:
           containers:
             - env:
                 - name: MYSQL_DATABASE
-                  value: db
                 - name: MYSQL_PASSWORD
-                  value: password
                 - name: MYSQL_ROOT_PASSWORD
-                  value: password
                 - name: MYSQL_USER
-                  value: dbuser
               image: mysql:5.7
               name: mysql-db
+              ports:
+                - containerPort: 3306
               resources: {}
               volumeMounts:
                 - mountPath: /var/lib/mysql
