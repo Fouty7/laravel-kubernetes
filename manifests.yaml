@@ -103,7 +103,7 @@ items:
       accessModes:
         - ReadWriteOnce
       hostPath:
-        path: "/mnt/data"
+        path: "."
     status: {}  
   - apiVersion: v1
     kind: PersistentVolumeClaim
