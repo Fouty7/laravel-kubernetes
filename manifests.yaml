@@ -11,6 +11,7 @@ items:
         io.kompose.service: laravel-app
       name: laravel-app
     spec:
+      type: NodePort
       ports:
         - name: "80"
           port: 80
@@ -76,18 +77,18 @@ items:
               ports:
                 - containerPort: 80
               resources: {}
-          initContainers:
-          - name: init-db
-            image: busybox
-            command: ['sh', '-c', 'until nc -z db:27017; do echo waiting for db; sleep 2; done;']    
-              #volumeMounts:
-              #  - mountPath: /var/www/html
-              #    name: laravel-app-claim0
+          #initContainers:
+          #- name: init-db
+          #  image: busybox
+          #  command: ['sh', '-c', 'until nc -z db:27017; do echo waiting for db; sleep 2; done;']    
+              volumeMounts:
+                - mountPath: /var/www/html
+                  name: laravel-app-claim0
           restartPolicy: Always
-          #volumes:
-          #  - name: laravel-app-claim0
-          #    persistentVolumeClaim:
-          #      claimName: laravel-app-claim0
+          volumes:
+            - name: laravel-app-claim0
+              persistentVolumeClaim:
+                claimName: laravel-app-claim0
     status: {}
   - apiVersion: v1
     kind: PersistentVolume
