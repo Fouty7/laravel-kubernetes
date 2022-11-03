@@ -131,19 +131,19 @@ items:
               resources: {}
               volumeMounts:
                 - mountPath: /var/lib/mysql
-                  name: mysql-db-claim0
+                  name: mysql-db-claim1
           restartPolicy: Always
           volumes:
-            - name: mysql-db-claim0
+            - name: mysql-db-claim1
               persistentVolumeClaim:
-                claimName: mysql-db-claim0
+                claimName: mysql-db-claim1
     status: {}
   - apiVersion: v1
     kind: PersistentVolume
     metadata:
-      name: mysql-db-claim0
+      name: mysql-db-claim1
       labels:
-        io.kompose.service: mysql-db-claim0
+        io.kompose.service: mysql-db-claim1
     spec:
       storageClassName: standard
       capacity:
@@ -156,12 +156,12 @@ items:
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      name: mysql-db-claim0
+      name: mysql-db-claim1
       creationTimestamp: null
       labels:
-        io.kompose.service: mysql-db-claim0
+        io.kompose.service: mysql-db-claim1
     spec:
-      volumeName: mysql-db-claim0
+      volumeName: mysql-db-claim1
       storageClassName: standard
       accessModes:
         - ReadWriteOnce
