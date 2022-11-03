@@ -9,8 +9,6 @@ RUN apt-get install -y \
     curl \
     sudo \
     unzip \
-    nodejs \ 
-    npm \
     libicu-dev \
     libbz2-dev \
     libpng-dev \
@@ -21,6 +19,9 @@ RUN apt-get install -y \
     g++ \
     libzip-dev \
     libonig-dev
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN apt-get install -y nodejs
 
 # 2. apache configs + document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
