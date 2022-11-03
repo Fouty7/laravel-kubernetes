@@ -74,7 +74,11 @@ items:
               name: laravel-app
               ports:
                 - containerPort: 80
-              resources: {}    
+              resources: {}
+          initContainers:
+          - name: init-db
+            image: busybox
+            command: ['sh', '-c', 'until nc -z db:27017; do echo waiting for db; sleep 2; done;']       
           restartPolicy: Always
     status: {}
   - apiVersion: networking.k8s.io/v1
