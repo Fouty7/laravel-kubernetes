@@ -125,9 +125,13 @@ items:
           containers:
             - env:
                 - name: MYSQL_DATABASE
+                  value: laravel
                 - name: MYSQL_PASSWORD
+                  value: password
                 - name: MYSQL_ROOT_PASSWORD
-              #  - name: MYSQL_USER
+                  value: password
+                - name: root
+                  value: "Hello from the environment"
               image: mysql:5.7
               name: mysql-db
               ports:
@@ -135,19 +139,19 @@ items:
               resources: {}
               volumeMounts:
                 - mountPath: /var/lib/mysql
-                  name: mysql-db-claim1
+                  name: mysql-db-claim0
           restartPolicy: Always
           volumes:
-            - name: mysql-db-claim1
+            - name: mysql-db-claim0
               persistentVolumeClaim:
-                claimName: mysql-db-claim1
+                claimName: mysql-db-claim0
     status: {}
   - apiVersion: v1
     kind: PersistentVolume
     metadata:
-      name: mysql-db-claim1
+      name: mysql-db-claim0
       labels:
-        io.kompose.service: mysql-db-claim1
+        io.kompose.service: mysql-db-claim0
     spec:
       storageClassName: standard
       capacity:
@@ -160,12 +164,12 @@ items:
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      name: mysql-db-claim1
+      name: mysql-db-claim0
       creationTimestamp: null
       labels:
-        io.kompose.service: mysql-db-claim1
+        io.kompose.service: mysql-db-claim0
     spec:
-      volumeName: mysql-db-claim1
+      volumeName: mysql-db-claim0
       storageClassName: standard
       accessModes:
         - ReadWriteOnce
