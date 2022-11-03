@@ -4,14 +4,13 @@ items:
     kind: Service
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+        kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
         io.kompose.service: laravel-app
       name: laravel-app
     spec:
-      type: NodePort
       ports:
         - name: "80"
           port: 80
@@ -24,7 +23,7 @@ items:
     kind: Service
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+        kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -43,7 +42,7 @@ items:
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+        kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -54,92 +53,34 @@ items:
       selector:
         matchLabels:
           io.kompose.service: laravel-app
-      strategy:
-        type: Recreate
+      strategy: {}
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+            kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
-            io.kompose.network/mynetwork: "true"
             io.kompose.service: laravel-app
         spec:
           containers:
             - env:
                 - name: APACHE_RUN_GROUP
-                  value: 'www-data'
+                  value: '#'
                 - name: APACHE_RUN_USER
-                  value: 'www-data'
+                  value: '#'
               image: aminfourty7/laravel-kubernetes:latest
               name: laravel-app
               ports:
                 - containerPort: 80
               resources: {}
-          #initContainers:
-          #- name: init-db
-          #  image: busybox
-          #  command: ['sh', '-c', 'until nc -z db:27017; do echo waiting for db; sleep 2; done;']    
-              #volumeMounts:
-              #  - mountPath: /var/www/html
-              #    name: laravel-app-claim0
           restartPolicy: Always
-          #volumes:
-          #  - name: laravel-app-claim0
-          #    persistentVolumeClaim:
-          #      claimName: laravel-app-claim0
     status: {}
-  #- apiVersion: v1
-  #  kind: PersistentVolume
-  #  metadata:
-  #    name: laravel-app-claim0
-  #    labels:
-  #      io.kompose.service: laravel-app-claim0
-  #  spec:
-  #    storageClassName: standard
-  #    capacity:
-  #      storage: 500Mi
-  #    accessModes:
-  #      - ReadWriteOnce
-  #    hostPath:
-  #      path: "."
-  #  status: {}  
-  #- apiVersion: v1
-  #  kind: PersistentVolumeClaim
-  #  metadata:
-  #    name: laravel-app-claim0
-  #    creationTimestamp: null
-  #    labels:
-  #      io.kompose.service: laravel-app-claim0
-  #  spec:
-  #    volumeName: laravel-app-claim0
-  #    storageClassName: standard
-  #    accessModes:
-  #      - ReadWriteOnce
-  #    resources:
-  #      requests:
-  #        storage: 500Mi
-  #  status: {}
-  #- apiVersion: networking.k8s.io/v1
-  #  kind: NetworkPolicy
-  #  metadata:
-  #    creationTimestamp: null
-  #    name: mynetwork
-  #  spec:
-  #    ingress:
-  #      - from:
-  #          - podSelector:
-  #              matchLabels:
-  #                io.kompose.network/mynetwork: "true"
-  #    podSelector:
-  #      matchLabels:
-  #        io.kompose.network/mynetwork: "true"
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+        kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -155,11 +96,10 @@ items:
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yaml -o manifests.yml
+            kompose.cmd: kompose convert -f docker-compose.yaml -o new-manifests.yml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
-            io.kompose.network/mynetwork: "true"
             io.kompose.service: mysql-db
         spec:
           containers:
@@ -183,36 +123,18 @@ items:
                 claimName: mysql-db-claim0
     status: {}
   - apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-      name: mysql-db-claim0
-      labels:
-        io.kompose.service: mysql-db-claim0
-    spec:
-      storageClassName: standard
-      capacity:
-        storage: 1Gi
-      accessModes:
-        - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Retain  
-      hostPath:
-        path: "/mnt/data"
-    status: {}  
-  - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      name: mysql-db-claim0
       creationTimestamp: null
       labels:
         io.kompose.service: mysql-db-claim0
+      name: mysql-db-claim0
     spec:
-      volumeName: mysql-db-claim0
-      storageClassName: standard
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 100Mi
     status: {}
 kind: List
 metadata: {}
