@@ -81,46 +81,46 @@ items:
           #- name: init-db
           #  image: busybox
           #  command: ['sh', '-c', 'until nc -z db:27017; do echo waiting for db; sleep 2; done;']    
-              volumeMounts:
-                - mountPath: /var/www/html
-                  name: laravel-app-claim0
+              #volumeMounts:
+              #  - mountPath: /var/www/html
+              #    name: laravel-app-claim0
           restartPolicy: Always
-          volumes:
-            - name: laravel-app-claim0
-              persistentVolumeClaim:
-                claimName: laravel-app-claim0
+          #volumes:
+          #  - name: laravel-app-claim0
+          #    persistentVolumeClaim:
+          #      claimName: laravel-app-claim0
     status: {}
-  - apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-      name: laravel-app-claim0
-      labels:
-        io.kompose.service: laravel-app-claim0
-    spec:
-      storageClassName: standard
-      capacity:
-        storage: 500Mi
-      accessModes:
-        - ReadWriteOnce
-      hostPath:
-        path: "."
-    status: {}  
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: laravel-app-claim0
-      creationTimestamp: null
-      labels:
-        io.kompose.service: laravel-app-claim0
-    spec:
-      volumeName: laravel-app-claim0
-      storageClassName: standard
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 500Mi
-    status: {}
+  #- apiVersion: v1
+  #  kind: PersistentVolume
+  #  metadata:
+  #    name: laravel-app-claim0
+  #    labels:
+  #      io.kompose.service: laravel-app-claim0
+  #  spec:
+  #    storageClassName: standard
+  #    capacity:
+  #      storage: 500Mi
+  #    accessModes:
+  #      - ReadWriteOnce
+  #    hostPath:
+  #      path: "."
+  #  status: {}  
+  #- apiVersion: v1
+  #  kind: PersistentVolumeClaim
+  #  metadata:
+  #    name: laravel-app-claim0
+  #    creationTimestamp: null
+  #    labels:
+  #      io.kompose.service: laravel-app-claim0
+  #  spec:
+  #    volumeName: laravel-app-claim0
+  #    storageClassName: standard
+  #    accessModes:
+  #      - ReadWriteOnce
+  #    resources:
+  #      requests:
+  #        storage: 500Mi
+  #  status: {}
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
