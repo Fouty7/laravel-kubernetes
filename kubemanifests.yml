@@ -123,7 +123,7 @@ items:
                 - name: MYSQL_DATABASE
                 - name: MYSQL_PASSWORD
                 - name: MYSQL_ROOT_PASSWORD
-                - name: MYSQL_USER
+              #  - name: MYSQL_USER
               image: mysql:5.7
               name: mysql-db
               ports:
