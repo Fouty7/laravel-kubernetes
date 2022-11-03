@@ -1,4 +1,4 @@
-FROM php:8.1.1-apache
+FROM php:8.0.2-apache
 
 RUN apt-get update
 
@@ -43,10 +43,9 @@ RUN docker-php-ext-install \
     mbstring \
     pdo_mysql \
     zip
-
 # 5. composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/
-COPY . /var/www/html
+COPY --from=composer:2.3 /usr/bin/composer /usr/bin/
+#COPY . /var/www/html
 
 # 6. we need a user with the same UID/GID with host user
 # so when we execute CLI commands, all the host file's ownership remains intact

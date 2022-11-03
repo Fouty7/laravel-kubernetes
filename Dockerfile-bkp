@@ -39,7 +39,7 @@ ENV LOG_CHANNEL=stderr
 VOLUME /var/www/html
 
 # Copy code and run composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.3.0 /usr/bin/composer /usr/bin/composer
 COPY . /var/www/tmp
 ARG uid
 RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
