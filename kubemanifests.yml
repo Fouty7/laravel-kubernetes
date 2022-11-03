@@ -11,6 +11,7 @@ items:
         io.kompose.service: laravel-app
       name: laravel-app
     spec:
+      type: NodePort
       ports:
         - name: "80"
           port: 80
@@ -67,9 +68,9 @@ items:
           containers:
             - env:
                 - name: APACHE_RUN_GROUP
-                  value: '#'
+                  value: 'www-data'
                 - name: APACHE_RUN_USER
-                  value: '#'
+                  value: 'www-data'
               image: aminfourty7/laravel-kubernetes:latest
               name: laravel-app
               ports:
