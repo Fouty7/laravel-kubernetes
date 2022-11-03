@@ -142,20 +142,6 @@ items:
               persistentVolumeClaim:
                 claimName: mysql-db-claim0
     status: {}
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      creationTimestamp: null
-      labels:
-        io.kompose.service: mysql-db-claim0
-      name: mysql-db-claim0
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 100Mi
-    status: {}
 kind: List
 metadata: {}
 
